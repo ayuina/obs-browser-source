@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div>
+        <p>
+            <span id='now'></span>
+        </p>
+        <audio src='school-bell.mp3' id='chime' ></audio>
+        <hr>
+        <input type="time" id='newTime' min='08:00' max='19:00' step='300'/>
+        <input type="button" value="Add" id='addTimeButton'/>
+        <hr>
+        <table id='chimeTable'>
+            <tbody>
+
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        // var btn = document.querySelector('input#chimeButton');
+        // btn.addEventListener('click', function(){
+        //     
+        // });
+
+
+        var chimeTimes = [];
+        if(!location.hash)
+        {
+            location.hash = btoa(JSON.stringify(chimeTimes));
+        }
+        chimeTimes = JSON.parse(atob(location.hash.slice(1)));
+
+        function refleshTable() {
+            var tbl = document.querySelector('table#chimeTable');
+            tbl.innerHTML = '';
+            chimeTimes.forEach((time, idx) => {
+                var tr = tbl.insertRow(0);
+                var td1 = tr.insertCell(0);
+                td1.innerText = time;
+                var td2 = tr.insertCell(0);
+                td2.innerText = 'x';
+                td2.addEventListener('click', function(){
+                    chimeTimes.splice(idx, 1);
+                    location.href = location.pathname + '#' + btoa(JSON.stringify(chimeTimes));
+                    refleshTable();
+                });
+            });
+        }
+
+        var addTimeBtn = document.querySelector('input#addTimeButton');
+        var newTime = document.querySelector('input#newTime');
+        addTimeBtn.addEventListener('click', function(){
+            if(newTime.value && (chimeTimes.indexOf(newTime.value) < 0)){
+                chimeTimes.push(newTime.value);
+                location.href = location.pathname + '#' + btoa(JSON.stringify(chimeTimes));
+                refleshTable();
+            }
+        })
+
+        refleshTable();
+
+        var now = document.getElementById('now');
+        var ringing = false;
+        window.setInterval(function(){
+            var current = new Date();
+            now.innerText = current;
+            var ct = current.getHours().toString().padStart(2, '0') + ":" + current.getMinutes().toString().padStart(2, '0')
+            if(chimeTimes.indexOf(ct) >= 0){
+                if(!ringing){
+                    document.querySelector('audio#chime').play();
+                    ringing = true;
+                    window.setInterval(function(){ ringing = false; }, 60000);
+                }
+            }
+        }, 1000);
+
+        
+    </script>
+</body>
+</html>

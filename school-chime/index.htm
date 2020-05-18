@@ -34,7 +34,7 @@
         function refleshTable() {
             var tbl = document.querySelector('table#chimeTable');
             tbl.innerHTML = '';
-            chimeTimes.forEach((time, idx) => {
+            chimeTimes.sort().reverse().forEach((time, idx) => {
                 var tr = tbl.insertRow(0);
                 var td1 = tr.insertCell(0);
                 td1.innerText = time;

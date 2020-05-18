@@ -29,7 +29,7 @@
         {
             location.hash = btoa(JSON.stringify(chimeTimes));
         }
-        chimeTimes = JSON.parse(atob(location.hash.slice(1)));
+        chimeTimes = JSON.parse(atob(location.hash.slice(1))).sort();
 
         function refleshTable() {
             var tbl = document.querySelector('table#chimeTable');

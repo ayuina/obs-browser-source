@@ -1,0 +1,14 @@
+{
+    "short_name":"School Chime",
+    "description": "description",
+    "background_color": "#3367D6",
+    "icons" : [
+        {
+            "src": "icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ]
+
+
+}
